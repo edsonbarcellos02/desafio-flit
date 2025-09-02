@@ -1,0 +1,12 @@
+.dp__input_wrap input
+{
+    height: 48px !important;
+    border: none;
+    border-bottom: 1px solid #a5a5a5;
+    border-radius: 0;
+}
+
+.dp__input_wrap input:hover
+{    
+    border-bottom: 1px solid #000;   
+}

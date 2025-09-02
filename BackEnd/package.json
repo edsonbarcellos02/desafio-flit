@@ -1,0 +1,31 @@
+{
+  "name": "api-desafio-flit",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "Edson Cássio Barcelos",
+  "type": "module",
+  "main": "main.js",
+  "scripts": {
+    "start": "nodemon main.js",
+    "postinstall": "prisma generate"
+  },
+  "prisma": {
+    "seed": "node src/data/seed.js"
+  },
+  "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "@prisma/client": "^6.15.0",
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dayjs": "^1.11.18",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
+    "nodemon": "^3.1.10"
+  },
+  "devDependencies": {
+    "prisma": "^6.15.0"
+  }
+}
