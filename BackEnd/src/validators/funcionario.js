@@ -24,11 +24,11 @@ export const create = (data)=>{
             "any.required": "O campo email é obrigatório."
         }),
         CPF: Joi.string()
-        .pattern(/^\d{11}$/)
+        .length(14)
         .required()
         .messages({
             "string.empty": "O CPF é obrigatório.",
-            "string.pattern.base": "O CPF deve conter exatamente 11 dígitos numéricos.",
+            "string.length": "O CPF deve conter exatamente 14 dígitos.",
             "any.required": "O campo CPF é obrigatório."
         }),
         Ativo: Joi.boolean()
@@ -76,20 +76,22 @@ export const create = (data)=>{
             "any.required": "O campo cidade é obrigatório."
         }),
         UF: Joi.string()
-        .length(2)
+        .min(2)
+        .max(50)
         .uppercase()
         .required()
         .messages({
             "string.base": "A UF deve ser um texto.",
             "string.empty": "A UF é obrigatória.",
-            "string.length": "A UF deve ter exatamente {#limit} caracteres.",
+            "string.min": "A cidade deve ter pelo menos {#limit} caracteres.",
+            "string.max": "A cidade deve ter no máximo {#limit} caracteres.",
             "any.required": "O campo UF é obrigatório."
         }),
         CEP: Joi.string()
-        .pattern(/^\d{5}-\d{3}$/)
+        .length(9)
         .required()
         .messages({
-            "string.pattern.base": "O CEP deve estar no formato 12345-678.",
+            "string.length": "O CEP deve conter exatamente 9 dígitos.",
         })            
     });
 

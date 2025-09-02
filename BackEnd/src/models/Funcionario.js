@@ -10,7 +10,7 @@ class Funcionario {
                 Nome: params.Nome, 
                 Email: params.Email, 
                 CPF: params.CPF, 
-                Ativo: params.Ativo, 
+                Ativo: params.Ativo === true || params.Ativo === 'true', 
                 Contratacao:  dayjs(params.Contratacao).toISOString(), 
                 Logradouro: params.Logradouro, 
                 Bairro: params.Bairro, 
@@ -36,7 +36,7 @@ class Funcionario {
     }
 
     async GetList() {
-        const sellers = await prisma.seller.findMany({
+        const data = await prisma.seller.findMany({
             select: {
                 IdSeller: true,
                 IdTeam: true,
@@ -56,18 +56,8 @@ class Funcionario {
                 Excluded: false,                           
             }
         });
-
-        
-        sellers.forEach(seller => {
-            if (seller?.Image) {
-                const buffer = Buffer.from(seller.Image);
-                const base64 = buffer.toString('base64');
-                const mime = 'image/png'; 
-                seller.Image = `data:${mime};base64,${base64}`;
-            }
-        });
-
-        return sellers;
+                
+        return data;
         
     }
 

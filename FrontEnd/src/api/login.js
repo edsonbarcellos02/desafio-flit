@@ -6,13 +6,14 @@ export async function Login(login, password) {
   const response = await api.post('/login', { 
     Usuario: login,
     Senha: password
-   })
+  })
+  
   setCookie(undefined, 'desafio-flit', response.data.token, {
     maxAge: 60 * 30,
     path: '/',
   });
 
-  api.defaults.headers['authorization-token'] = `${response.data.token}`
+  api.defaults.headers['Authorization'] = `${response.data.token}`
   localStorage.setItem('user', btoa(JSON.stringify(response.data.user)))
   
   const user = {
@@ -30,5 +31,5 @@ export async function Login(login, password) {
 export function logout() {
   destroyCookie(undefined, 'desafio-flit')
   localStorage.removeItem('user')
-  delete api.defaults.headers['authorization-token']
+  delete api.defaults.headers['Authorization']
 }

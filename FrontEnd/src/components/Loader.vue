@@ -23,7 +23,7 @@
         z-index: 9999;
     }
     .loader {
-        background: #402051bf;
+        background: #203b51bf;
         padding: 1rem 2rem;
         border-radius: 8px;
         font-weight: bold;

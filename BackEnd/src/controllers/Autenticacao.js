@@ -31,7 +31,7 @@ class Autenticacao{
         res.status(200);
         res.header("Authorization", token);
         res.json({ 
-            access_token: token,
+            token: token,
             user: {
                 "IdUsuario": data.IdUsuario,                
                 "Nome": data.Nome,                                
