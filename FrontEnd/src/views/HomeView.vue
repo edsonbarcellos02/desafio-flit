@@ -20,7 +20,6 @@
 
   	<v-data-table
       	v-model:search="search"
-      	:filter-keys="['name']"
       	:items="data"
 		:headers="headers"          
 		:style="{ height: tableHeight + 'px' }"
@@ -34,7 +33,7 @@
 			</v-avatar>
       	</template>
 		<template v-slot:item.CPF="{ item }">
-			<div class="text-start">@{{ item.CPF }}</div>
+			<div class="text-start">{{ item.CPF }}</div>
 		</template>	
 		<template v-slot:item.Ativo="{ item }">
 			<v-chip variant="tonal" :color="item.Ativo ? 'green' : 'red'">
@@ -46,7 +45,7 @@
 		</template>	
 		<template v-slot:item.actions="{ item }">
 			<div class="d-flex align-center" style="gap: 10px;">
-				<v-tooltip text="Endereço" location="top" v-slot:activator="{ props }">
+				<v-tooltip text="Visualizar endereço" location="top" v-slot:activator="{ props }">
 					<v-btn @click="showAddress(item)" size="x-small" icon color="orange" variant="outlined" v-bind="props">
 						<v-icon size="20">mdi-map-marker</v-icon>
 					</v-btn>

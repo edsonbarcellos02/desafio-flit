@@ -8,7 +8,7 @@ class Funcionario{
     async Create(req, res)
     {
         const { Nome, Email, CPF, Ativo, Contratacao, Logradouro, Bairro, Cidade, UF, CEP} = req.body;  
-        const {error} = Validator(req.body);    
+        const {error} = createValidator(req.body);    
 
         if(error)
             return res.status(400).send(error.message);

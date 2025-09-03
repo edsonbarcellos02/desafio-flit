@@ -25,7 +25,7 @@
 
           <form @submit.prevent="handleLogin">
             <div class="form-group">
-              <label style="font-size: 12px; color: #455a64;" for="login">Usuário</label>
+              <label style="font-size: 13px; color: #455a64;" for="login">Usuário</label>
               <div class="input-wrapper">
                 <User class="icon-input" />
                 <input type="text" id="login" v-model="login" placeholder="João" required />
@@ -33,7 +33,7 @@
             </div>
 
             <div class="form-group">
-              <label style="font-size: 12px; color: #455a64;" for="password">Senha</label>
+              <label style="font-size: 13px; color: #455a64;" for="password">Senha</label>
               <div class="input-wrapper">
                 <Lock class="icon-input" />
                 <input :type="showPassword ? 'text' : 'password'" id="password" v-model="password" placeholder="Digite sua senha" required />

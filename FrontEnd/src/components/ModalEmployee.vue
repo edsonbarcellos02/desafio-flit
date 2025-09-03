@@ -81,6 +81,7 @@
               </v-col>
 
               <v-col cols="12" md="4" >
+                <small class="label-date">Contratação</small>
                 <VueDatePicker              
                   v-model="form.Contratacao"
                   placeholder="Contratação*"
@@ -234,7 +235,8 @@
   const valid = ref(false);      
   const imageUrl = ref(null);
   const formRef = ref(null);
-  const dialog = ref(false);       
+  const dialog = ref(false);
+  const checkboxStatus = ref(true);          
 
    const props = defineProps({    
     getList: Function
@@ -253,7 +255,7 @@
       
     ],
     logradouro: [
-      (v) => !!v || 'Endereço é obrigatório',
+      (v) => !!v || 'Logradouro é obrigatório',
     ],
     bairro: [
       (v) => !!v || 'Bairro é obrigatório',
@@ -265,7 +267,7 @@
       (v) => !!v || 'Estado(UF) é obrigatório',
     ],
     cep: [
-      (v) => !!v || 'Cep é obrigatório',
+      (v) => !!v || 'CEP é obrigatório',
     ]
   }
 
@@ -285,8 +287,10 @@
 
   const openDialog = (data) => {        
       dialog.value = true;        
-      clearForm();          
-      data2form(data);
+      clearForm();  
+      
+      if(!!data?.Id)
+        data2form(data);
   }  
 
   const onFileChange = (e)=> {
@@ -302,14 +306,14 @@
 
   const data2form = (data)=>{
 
-    imageUrl.value = data.avatar;
+    imageUrl.value = data.avatar;    
 
     form.value.Id = data.Id,
     form.value.Avatar = data.avatar,
     form.value.Nome = data.Nome,
     form.value.Email = data.Email,
-    form.value.CPF = data.CPF,
-    form.value.Ativo = data.Ativo,
+    form.value.CPF = data.CPF,    
+    form.value.Ativo = data.Ativo,    
     form.value.Contratacao = dayjs(data.Contratacao).toDate(),
     form.value.Logradouro = data.Logradouro,
     form.value.Bairro = data.Bairro,
@@ -319,6 +323,7 @@
   }
 
   const clearForm = () =>{
+    imageUrl.value = null;
     form.value = {
         Avatar: null,
         Nome: null,
@@ -340,7 +345,9 @@
       return;
 
       const data = new FormData();      
-      data.append('Id', form.value.Id);
+      if(!!form.value?.Id)
+        data.append('Id', form.value?.Id);
+
       data.append('Nome', form.value.Nome);
       data.append('Email', form.value.Email);
       data.append('CPF', form.value.CPF);
@@ -359,7 +366,7 @@
 
       try{      
         
-        if(!form.value.Id){
+        if(!form.value?.Id){
           await NewEmployee(data);
         }else{          
           await EditEmployee(data);
@@ -414,5 +421,10 @@
       font-weight: 600;   
       color: #1991ee;
       text-transform: uppercase;
+    }
+    .label-date
+    {
+      color: gray;
+      font-size: 12px;
     }
 </style>
