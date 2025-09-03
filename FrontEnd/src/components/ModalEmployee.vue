@@ -306,7 +306,8 @@
 
   const data2form = (data)=>{
 
-    imageUrl.value = data.avatar;    
+    imageUrl.value = `${data.avatar}?${Math.floor(Math.random() * 999)}`;    
+    
 
     form.value.Id = data.Id,
     form.value.Avatar = data.avatar,

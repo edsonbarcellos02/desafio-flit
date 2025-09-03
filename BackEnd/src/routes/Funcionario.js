@@ -1,7 +1,7 @@
 import express from "express";
 import Funcionario from "../controllers/Funcionario.js";
 import { Auth } from "../middlewares/Auth.js";
-import upload from '../middlewares/Upload.js';
+import upload from '../middlewares/upload.js';
 
 const routes = express.Router();
 
