@@ -1,14 +1,12 @@
-
 # Desafio Flit – Gestão de Funcionários
 
 Aplicação web para cadastro e listagem de funcionários, desenvolvida como parte de desafio técnico.
 O projeto é dividido em dois módulos: backend (API) e frontend (Vue.js).
 
-
-
 ## 🚀 Tecnologias utilizadas
 
 Backend (API):
+
 - Node.js + Express
 - SQLite com Prisma ORM
 - Express-Validator (validações)
@@ -16,21 +14,24 @@ Backend (API):
 - Seed inicial para criação de usuário padrão
 
 Frontend:
+
 - Vue 3 + Vite
 - Axios
 - Vuetify
+
 ## ⚙️ Funcionalidades
 
 - Login com usuário padrão criado via seed (enviado por e-mail).
 - Cadastro de funcionários com os seguintes dados:
-    - Ativo
-    - Foto
-    - Nome
-    - E-mail
-    - Data de contratação
-    - CPF
-    - Endereço (Rua, CEP, Bairro, Cidade, Estado)
+  - Ativo
+  - Foto
+  - Nome
+  - E-mail
+  - Data de contratação
+  - CPF
+  - Endereço (Rua, CEP, Bairro, Cidade, Estado)
 - Listagem de funcionários já cadastrados.
+
 ## Rodando localmente
 
 Clonar o repositório
@@ -42,6 +43,11 @@ Clonar o repositório
 
 Rodar o Backend
 
+Criar o arquivo .env na raiz do projeto com os parâmetros
+
+- PORT=8033
+- TOKEN_SECRET
+
 ```bash
     cd backend
     npm install
@@ -51,6 +57,9 @@ Rodar o Backend
 
     # Caso o usuario não seja criado junto com banco, execute
     npx prisma db seed
+
+    # Para conferir se o usuário foi criado pode visualizar o banco
+    npx prisma studio
 
     npm start
 ```
@@ -63,7 +72,6 @@ Rodar o Frontend
     npm run dev
 ```
 
-
 ## 🚀 Deploy
 
 Hospedado em VPS privada, com ambiente configurado para rodar aplicações Node.js.
@@ -74,4 +82,3 @@ Hospedado em VPS privada, com ambiente configurado para rodar aplicações Node.
 
 Um usuário padrão é criado automaticamente via **seed do Prisma**.  
 Os dados de acesso foram enviados no e-mail de resposta do desafio.
-

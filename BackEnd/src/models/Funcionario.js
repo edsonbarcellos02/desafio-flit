@@ -22,6 +22,30 @@ class Funcionario {
         
         return data.Id;    
     }
+
+    async Update(params)
+    {
+
+        const data = await prisma.funcionario.updateMany({
+            data: { 
+                Nome: params.Nome, 
+                Email: params.Email, 
+                CPF: params.CPF, 
+                Ativo: params.Ativo === true || params.Ativo === 'true', 
+                Contratacao:  dayjs(params.Contratacao).toISOString(), 
+                Logradouro: params.Logradouro, 
+                Bairro: params.Bairro, 
+                Cidade: params.Cidade, 
+                UF: params.UF, 
+                CEP: params.CEP
+            },
+            where:{
+                Id: params.Id
+            }
+        });
+                      
+        return data.count;         
+    }
     
     async getByCPF(CPF){
               
@@ -36,31 +60,26 @@ class Funcionario {
     }
 
     async GetList() {
-        const data = await prisma.seller.findMany({
+        const data = await prisma.funcionario.findMany({
             select: {
-                IdSeller: true,
-                IdTeam: true,
-                Name: true,
-                Image: true,
-                Update: true,
-                Excluded: true,
-                Register: true,
-                Active: true,
-                Team: {
-                    select: {
-                    Name: true,
-                    },
-                },
-            },
-            where:{
-                Excluded: false,                           
+                Id: true,
+                Nome: true,
+                Email: true,
+                CPF: true,
+                Ativo : true,
+                Contratacao: true,
+                Logradouro: true,
+                Bairro: true,
+                Cidade: true,
+                UF: true,
+                CEP: true,
+                Cadastro: true,
             }
         });
                 
         return data;
         
     }
-
   
 };
 

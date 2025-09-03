@@ -85,16 +85,12 @@
                   v-model="form.Contratacao"
                   placeholder="Contratação*"
                   :locale="'pt-BR'"                  
-                  select-text="Escolher"
-                  cancel-text="Cancelar"
-                  today-text="Hoje"
-                  now-text="Agora"
+                  :format="'dd/MM/yyyy'"
                   auto-apply
                   text-input
                   :clearable="false"
                   :enable-time-picker="false"
-                  input-class="datepicker-input"
-                  
+                  input-class="datepicker-input"                  
                 />
 
               </v-col>
@@ -223,7 +219,7 @@
 </template>
 
 <script setup>
-  import { ref, defineExpose, } from 'vue'
+  import { ref, defineExpose, defineProps} from 'vue'
   import dayjs from 'dayjs';
   import 'dayjs/locale/pt-br';
   import { toast } from "vue3-toastify";
@@ -233,12 +229,16 @@
   import { vMaska } from "maska/vue";
 
   import Estados from '@/data/estadosBrasil.json';
-  import {NewEmployee} from '@/api/funcionario.js';  
+  import {NewEmployee, EditEmployee} from '@/api/funcionario.js';  
 
   const valid = ref(false);      
   const imageUrl = ref(null);
   const formRef = ref(null);
   const dialog = ref(false);       
+
+   const props = defineProps({    
+    getList: Function
+  });
 
   const rules = {
     nome: [
@@ -275,7 +275,7 @@
       Email: null,
       CPF: null,
       Ativo: true,
-      Contratacao: dayjs().format('YYYY-MM-DD'),
+      Contratacao: dayjs().toDate(),
       Logradouro: null,
       Bairro: null,
       Cidade: null,
@@ -284,8 +284,9 @@
   });
 
   const openDialog = (data) => {        
-      dialog.value = true;  
+      dialog.value = true;        
       clearForm();          
+      data2form(data);
   }  
 
   const onFileChange = (e)=> {
@@ -299,6 +300,24 @@
     }
   }
 
+  const data2form = (data)=>{
+
+    imageUrl.value = data.avatar;
+
+    form.value.Id = data.Id,
+    form.value.Avatar = data.avatar,
+    form.value.Nome = data.Nome,
+    form.value.Email = data.Email,
+    form.value.CPF = data.CPF,
+    form.value.Ativo = data.Ativo,
+    form.value.Contratacao = dayjs(data.Contratacao).toDate(),
+    form.value.Logradouro = data.Logradouro,
+    form.value.Bairro = data.Bairro,
+    form.value.Cidade = data.Cidade,
+    form.value.UF = data.UF,
+    form.value.CEP = data.CEP
+  }
+
   const clearForm = () =>{
     form.value = {
         Avatar: null,
@@ -306,7 +325,7 @@
         Email: null,
         CPF: null,
         Ativo: true,
-        Contratacao: dayjs().format('YYYY-MM-DD'),
+        Contratacao: dayjs().toDate(),
         Logradouro: null,
         Bairro: null,
         Cidade: null,
@@ -321,6 +340,7 @@
       return;
 
       const data = new FormData();      
+      data.append('Id', form.value.Id);
       data.append('Nome', form.value.Nome);
       data.append('Email', form.value.Email);
       data.append('CPF', form.value.CPF);
@@ -337,9 +357,17 @@
         data.append('Avatar', fileInput.files[0]);
       }
 
-      try{        
-        await NewEmployee(data);
+      try{      
+        
+        if(!form.value.Id){
+          await NewEmployee(data);
+        }else{          
+          await EditEmployee(data);
+        }
+
         clearForm();
+        props.getList();
+        dialog.value = false;
       }catch(err){
         toast(err?.response?.data || "Resposta inesperada!", {
           "theme": "light",
@@ -347,8 +375,7 @@
           "transition": "zoom",
           "dangerouslyHTMLString": true
         });
-      }
-    
+      }    
   }
 
   defineExpose({

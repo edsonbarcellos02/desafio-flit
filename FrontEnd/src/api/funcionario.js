@@ -11,6 +11,22 @@ export async function NewEmployee(data)
   return response.data;
 }
 
+export async function EditEmployee(data)
+{
+  const response = await api.put('/funcionario', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });  
+  return response.data;
+}
+
+export async function GetList()
+{
+  const response = await api.get('/funcionario');  
+  return response.data;
+}
+
 api.interceptors.request.use(config =>
 {
     const global = useGlobalStore()

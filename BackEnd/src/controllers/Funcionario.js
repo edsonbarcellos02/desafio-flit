@@ -1,14 +1,14 @@
 import fs from 'fs';
 import path from 'path';
 import funcionario from '../models/Funcionario.js';
-import { create} from '../validators/funcionario.js';
+import { createValidator, updateValidator } from '../validators/funcionario.js';
 
 class Funcionario{
 
     async Create(req, res)
     {
         const { Nome, Email, CPF, Ativo, Contratacao, Logradouro, Bairro, Cidade, UF, CEP} = req.body;  
-        const {error} = create(req.body);    
+        const {error} = Validator(req.body);    
 
         if(error)
             return res.status(400).send(error.message);
@@ -19,6 +19,29 @@ class Funcionario{
             return res.status(409).send("Já existe um cadastro com este CPF.");
         
         const Id = await funcionario.Create({ Nome, Email, CPF, Ativo, Contratacao, Logradouro, Bairro, Cidade, UF, CEP });
+                
+        if (!Id) 
+            return res.status(500).send("Falha ao realizar cadastro!");
+        
+        if(req.file) {
+            const ext = path.extname(req.file.originalname);
+            const newName = `uploads/${Id}${ext}`;
+            fs.renameSync(req.file.path, newName);
+        }
+        
+        res.status(201).send("Cadastro realizado com sucesso!"); 
+                                           
+    }  
+
+    async Update(req, res)
+    {
+        const { Id, Nome, Email, CPF, Ativo, Contratacao, Logradouro, Bairro, Cidade, UF, CEP} = req.body;  
+        const {error} = updateValidator(req.body);    
+
+        if(error)
+            return res.status(400).send(error.message);
+        
+        await funcionario.Update({ Id, Nome, Email, CPF, Ativo, Contratacao, Logradouro, Bairro, Cidade, UF, CEP });
                 
         if (!Id) 
             return res.status(500).send("Falha ao realizar cadastro!");
@@ -44,7 +67,7 @@ class Funcionario{
             const result = funcionarios.map(data => {                
                 const uploadDir = 'uploads/';
                 const files = fs.readdirSync(uploadDir);
-                const imgFile = files.find(file => path.parse(file).name === data.id.toString());
+                const imgFile = files.find(file => path.parse(file).name === data.Id.toString());
 
                 return {
                     ...data,

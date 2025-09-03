@@ -21,7 +21,7 @@
   	<v-data-table
       	v-model:search="search"
       	:filter-keys="['name']"
-      	:items="items"
+      	:items="data"
 		:headers="headers"          
 		:style="{ height: tableHeight + 'px' }"
     >
@@ -29,7 +29,7 @@
 			<v-avatar size="40px">
 				<v-img
 					alt="John"					
-					src="https://cdn.vuetifyjs.com/images/john.jpg"
+					:src="`${item.avatar}?${Math.floor(Math.random() * 999)}`"
 				></v-img>
 			</v-avatar>
       	</template>
@@ -45,10 +45,15 @@
 			<div class="text-start">{{ dayjs(item.Contratacao).format('DD/MM/YYYY') }}</div>
 		</template>	
 		<template v-slot:item.actions="{ item }">
-			<div class="d-flex align-center">
+			<div class="d-flex align-center" style="gap: 10px;">
 				<v-tooltip text="Endereço" location="top" v-slot:activator="{ props }">
 					<v-btn @click="showAddress(item)" size="x-small" icon color="orange" variant="outlined" v-bind="props">
 						<v-icon size="20">mdi-map-marker</v-icon>
+					</v-btn>
+				</v-tooltip>
+				<v-tooltip text="Editar" location="top" v-slot:activator="{ props }">
+					<v-btn @click="modalEmployee(item)" size="x-small" icon color="blue" variant="outlined" v-bind="props">
+						<v-icon size="20">mdi-pencil-box</v-icon>
 					</v-btn>
 				</v-tooltip>
 			</div>
@@ -56,17 +61,22 @@
     </v-data-table>
 
 	 <ModalAddress ref="addressRef"/>
-	 <ModalEmployee ref="employeeRef"/>
+	 <ModalEmployee :getList="getList" ref="employeeRef"/>
 </template>
 
 <script setup>
-	import { ref } from 'vue';
+	import { ref, onMounted } from 'vue';
 	import dayjs from 'dayjs';
 	import 'dayjs/locale/pt-br';
+ 	import { toast } from "vue3-toastify";
+  	import "vue3-toastify/dist/index.css";
+
 	import ModalAddress from '@/components/ModalAddress.vue';
 	import ModalEmployee from '@/components/ModalEmployee.vue';
+	import { GetList } from '@/api/funcionario.js';
 
 	const search = ref('');
+	const data = ref([]);
 	const addressRef = ref(null);
 	const employeeRef = ref(null);
 	const tableHeight = ref(window.innerHeight - 200);
@@ -79,30 +89,31 @@
 		{ title: 'Status', align: 'start', key: 'Ativo'},	
 		{ title: 'Contratação', align: 'start', key: 'Contratacao'},
 		{ key: 'actions', sortable: false },
-	];
-
-	const items = [
-		{
-			Image: null,
-			Nome: "Edson Cássio Barcelos",    
-			Email: "edsonbarcellos02@gmail.com",
-			CPF: "18241594712",
-			Ativo: true,
-			Contratacao: "2025-08-31",
-			Logradouro: "Rua paquequer",
-			Bairro: "Bom Retiro",
-			Cidade: "Teresópolis",
-			UF: "RJ",
-			CEP: "25955-650" 
-		}		
-	]
+	];	
 	
 	const showAddress = (item) => {
       	addressRef.value?.openDialog(item);
     };
-	const modalEmployee = (item) => {
+	const modalEmployee = (item) => {		
       	employeeRef.value?.openDialog(item);
     };
+
+	const getList = async () => {	
+		try {
+			data.value = await GetList();
+		} catch (err) {
+			toast(err?.response?.data || "Resposta inesperada!", {
+				"theme": "light",
+				"type": "error",
+				"transition": "zoom",
+				"dangerouslyHTMLString": true	
+			});
+		}
+	}
+
+	onMounted(() => {
+		getList();		
+	});
 
 </script>
 
