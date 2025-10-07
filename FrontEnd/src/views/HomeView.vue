@@ -26,9 +26,9 @@
     >
 	   <template v-slot:item.image="{ item }">
 			<v-avatar size="40px">
-				<v-img
+				<v-img					
 					alt="John"					
-					:src="`${item.avatar}?${Math.floor(Math.random() * 999)}`"
+					:src="`${item.avatar || emptyImage}?${Math.floor(Math.random() * 999)}`"
 				></v-img>
 			</v-avatar>
       	</template>
@@ -70,6 +70,7 @@
  	import { toast } from "vue3-toastify";
   	import "vue3-toastify/dist/index.css";
 
+	import emptyImage from '@/assets/empty-image.jpg';
 	import ModalAddress from '@/components/ModalAddress.vue';
 	import ModalEmployee from '@/components/ModalEmployee.vue';
 	import { GetList } from '@/api/funcionario.js';

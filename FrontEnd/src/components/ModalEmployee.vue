@@ -21,8 +21,7 @@
               >                
                 <label for="file-upload" class="cursor-pointer">
                   <v-avatar size="60" >
-                    <v-img v-if="imageUrl" :src="imageUrl" />
-                    <v-icon v-else size="48">mdi-account-circle</v-icon>
+                     <v-img :src="imageUrl" />                    
                   </v-avatar>
                 </label>                            
                 <input
@@ -88,7 +87,6 @@
                   :locale="'pt-BR'"                  
                   :format="'dd/MM/yyyy'"
                   auto-apply
-                  text-input
                   :clearable="false"
                   :enable-time-picker="false"
                   input-class="datepicker-input"                  
@@ -229,6 +227,7 @@
   import '@vuepic/vue-datepicker/dist/main.css';
   import { vMaska } from "maska/vue";
 
+  import emptyImage from '@/assets/empty-image.jpg';
   import Estados from '@/data/estadosBrasil.json';
   import {NewEmployee, EditEmployee} from '@/api/funcionario.js';  
 
@@ -306,7 +305,7 @@
 
   const data2form = (data)=>{
 
-    imageUrl.value = `${data.avatar}?${Math.floor(Math.random() * 999)}`;    
+    imageUrl.value = `${data.avatar || emptyImage}?${Math.floor(Math.random() * 999)}`;    
     
 
     form.value.Id = data.Id,

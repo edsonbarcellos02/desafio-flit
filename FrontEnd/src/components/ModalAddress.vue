@@ -4,13 +4,7 @@
       v-model="dialog"
       max-width="550"
       persistent
-    >
-      <template v-slot:activator="{ props: activatorProps }">
-        <v-btn v-bind="activatorProps">
-          Open Dialog
-        </v-btn>
-      </template>
-
+    >      
       <v-card        
       >
         <v-card-title class="modal-header">
